@@ -12,7 +12,7 @@ export default function Users() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [isStatus, setIsStatus] = useState('all');
-  const [isOrder, setIsOrder] = useState('az');
+  const [isRerenderList, setIsRerenderList] = useState(false);
 
   const ageLimit = 18;
 
@@ -25,22 +25,6 @@ export default function Users() {
       });
   }, []);
 
-  //   let userListAZ;
-  //   let userListZA;
-
-  //   isLoaded &&
-  //     (userListAZ = isUsers.sort((a, b) =>
-  //       a.firstName.localeCompare(b.firstName)
-  //     ));
-
-  //   isLoaded &&
-  //     (userListZA = isUsers.sort((a, b) =>
-  //       a.firstName.localeCompare(b.firstName)
-  //     ));
-
-  //   console.log('AZ', userListAZ);
-  //   console.log('ZA', userListZA);
-
   const handleStatusOrder = (e) => {
     e.preventDefault();
     setIsStatus(e.target.value);
@@ -48,11 +32,14 @@ export default function Users() {
 
   const handleAlphabeticOrder = (e) => {
     e.preventDefault();
-    e.target.value === 'az'
-      ? isUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-      : isUsers.sort((a, b) => b.firstName.localeCompare(a.firstName));
-    console.log(isUsers);
-    e.target.value === 'az' ? setIsOrder('za') : setIsOrder('az');
+
+    e.target.value === 'az' &&
+      isUsers.sort((a, b) => a.firstName.localeCompare(b.firstName));
+
+    e.target.value === 'za' &&
+      isUsers.sort((a, b) => b.firstName.localeCompare(a.firstName));
+
+    setIsRerenderList(!isRerenderList);
   };
 
   return (
@@ -62,7 +49,7 @@ export default function Users() {
 
         <div className={styles.OptionsWrapper}>
           <div className={styles.Status}>
-            <label htmlFor="cars">Status</label>
+            <label htmlFor="cars">Status:</label>
             <select
               id="status"
               name="status"
@@ -75,7 +62,7 @@ export default function Users() {
           </div>
 
           <div className={styles.Order}>
-            <label htmlFor="order">Order by</label>
+            <label htmlFor="order">Order by:</label>
             <select
               id="order"
               name="order"
@@ -89,10 +76,6 @@ export default function Users() {
         <div className={styles.UserPanel}>
           {isLoaded &&
             Object.values(isUsers).map((values, key) => {
-              {
-                /* console.log(values); */
-              }
-
               const userAge = moment(values.dateOfBirth)
                 .fromNow()
                 .split(' ')[0];

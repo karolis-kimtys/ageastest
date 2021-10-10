@@ -1,0 +1,85 @@
+.Container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Panel {
+  width: 700px;
+  height: 500px;
+  > h1 {
+    text-align: center;
+  }
+}
+
+.OptionsWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 250px;
+  margin-left: 15px;
+}
+
+.Status,
+.Order {
+  display: flex;
+  flex-direction: column;
+}
+
+.Status label,
+.Order label {
+  margin: 0 10px 10px 0;
+  width: 100px;
+}
+
+.Status select,
+.Order select {
+  border: 1px solid slategray;
+  border-radius: 2px;
+  padding: 5px;
+  font-size: 1em;
+  color: rgb(100, 100, 100);
+}
+
+.UserPanel {
+  font-size: 1em;
+  margin: 5px 0 0 15px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.User {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(252, 252, 252);
+  margin: 10px 15px 5px 0;
+  padding: 10px;
+  width: 250px;
+  flex-grow: 1;
+  color: rgb(100, 100, 100);
+  border: 1px solid slategray;
+  border-radius: 2px;
+}
+.UserStatusWrapper {
+  margin-left: 15px;
+}
+
+.UserName {
+  font-weight: 500;
+}
+
+.StatusIndicator {
+  display: flex;
+  margin-left: 5px;
+}
+
+.UserStatus {
+  font-style: italic;
+  text-transform: capitalize;
+}

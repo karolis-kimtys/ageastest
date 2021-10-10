@@ -3,14 +3,18 @@ import moment from 'moment';
 import styles from './Users.module.scss';
 import userList from '../assets/userlist.txt';
 
-import statusActive from '../assets/statusActive.svg';
-import statusAway from '../assets/statusAway.svg';
-import statusInactive from '../assets/statusInactive.svg';
+import active from '../assets/statusActive.svg';
+import away from '../assets/statusAway.svg';
+import inactive from '../assets/statusInactive.svg';
 
 export default function Users() {
   const [isUsers, setIsUsers] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
+
   const [isStatus, setIsStatus] = useState('all');
+  const [isOrder, setIsOrder] = useState('az');
+
+  const ageLimit = 18;
 
   useEffect(() => {
     fetch(userList)
@@ -21,10 +25,34 @@ export default function Users() {
       });
   }, []);
 
+  //   let userListAZ;
+  //   let userListZA;
+
+  //   isLoaded &&
+  //     (userListAZ = isUsers.sort((a, b) =>
+  //       a.firstName.localeCompare(b.firstName)
+  //     ));
+
+  //   isLoaded &&
+  //     (userListZA = isUsers.sort((a, b) =>
+  //       a.firstName.localeCompare(b.firstName)
+  //     ));
+
+  //   console.log('AZ', userListAZ);
+  //   console.log('ZA', userListZA);
+
   const handleStatusOrder = (e) => {
     e.preventDefault();
     setIsStatus(e.target.value);
-    console.log(e.target.value);
+  };
+
+  const handleAlphabeticOrder = (e) => {
+    e.preventDefault();
+    e.target.value === 'az'
+      ? isUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
+      : isUsers.sort((a, b) => b.firstName.localeCompare(a.firstName));
+    console.log(isUsers);
+    e.target.value === 'az' ? setIsOrder('za') : setIsOrder('az');
   };
 
   return (
@@ -48,9 +76,12 @@ export default function Users() {
 
           <div className={styles.Order}>
             <label htmlFor="order">Order by</label>
-            <select id="order" name="order">
-              <option value="A---Z">A---Z</option>
-              <option value="Z---A">Z---A</option>
+            <select
+              id="order"
+              name="order"
+              onChange={(e) => handleAlphabeticOrder(e)}>
+              <option value="az">A - Z</option>
+              <option value="za">Z - A</option>
             </select>
           </div>
         </div>
@@ -68,31 +99,59 @@ export default function Users() {
 
               return (
                 <div key={key}>
-                  {values.status === isStatus}
-                  <div>
-                    {userAge >= 18 && (
-                      <div className={styles.User}>
-                        <div className={styles.StatusIndicator}>
-                          {values.status === 'active' ? (
-                            <img src={statusActive} alt="" />
-                          ) : values.status === 'away' ? (
-                            <img src={statusAway} alt="" />
-                          ) : (
-                            <img src={statusInactive} alt="" />
-                          )}
-                        </div>
+                  {userAge > ageLimit && (
+                    <div>
+                      {isStatus === 'all' ? (
+                        <div>
+                          <div className={styles.User}>
+                            <div className={styles.StatusIndicator}>
+                              {values.status === 'active' ? (
+                                <img src={active} alt="" />
+                              ) : values.status === 'away' ? (
+                                <img src={away} alt="" />
+                              ) : (
+                                <img src={inactive} alt="" />
+                              )}
+                            </div>
 
-                        <div className={styles.UserStatusWrapper}>
-                          <div className={styles.UserName}>
-                            {values.firstName} {values.lastName}
-                          </div>
-                          <div className={styles.UserStatus}>
-                            {values.status}
+                            <div className={styles.UserStatusWrapper}>
+                              <div className={styles.UserName}>
+                                {values.firstName} {values.lastName}
+                              </div>
+                              <div className={styles.UserStatus}>
+                                {values.status}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      ) : (
+                        values.status === isStatus && (
+                          <div>
+                            <div className={styles.User}>
+                              <div className={styles.StatusIndicator}>
+                                {values.status === 'active' ? (
+                                  <img src={active} alt="" />
+                                ) : values.status === 'away' ? (
+                                  <img src={away} alt="" />
+                                ) : (
+                                  <img src={inactive} alt="" />
+                                )}
+                              </div>
+
+                              <div className={styles.UserStatusWrapper}>
+                                <div className={styles.UserName}>
+                                  {values.firstName} {values.lastName}
+                                </div>
+                                <div className={styles.UserStatus}>
+                                  {values.status}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  )}
                 </div>
               );
             })}

@@ -11,7 +11,6 @@ export default function Users() {
   const [isUsers, setIsUsers] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isStatus, setIsStatus] = useState('all');
-  const [isRerenderList, setIsRerenderList] = useState(false);
 
   const ageLimit = 18;
 
@@ -25,22 +24,20 @@ export default function Users() {
   }, []);
 
   const handleStatusOrder = (e) => {
-    e.preventDefault();
     setIsStatus(e.target.value);
   };
 
   const handleAlphabeticOrder = (e) => {
-    e.preventDefault();
-
+    const tempList = [...isUsers];
     // Sorts the JSON objects in A-Z order
     e.target.value === 'az' &&
-      isUsers.sort((a, b) => a.firstName.localeCompare(b.firstName));
+      tempList.sort((a, b) => a.firstName.localeCompare(b.firstName));
 
     // Sorts the JSON objects in Z-A order
     e.target.value === 'za' &&
-      isUsers.sort((a, b) => b.firstName.localeCompare(a.firstName));
+      tempList.sort((a, b) => b.firstName.localeCompare(a.firstName));
 
-    setIsRerenderList(!isRerenderList);
+    setIsUsers(tempList);
   };
 
   return (
